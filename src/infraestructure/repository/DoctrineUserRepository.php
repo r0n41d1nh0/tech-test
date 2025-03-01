@@ -30,13 +30,11 @@ class DoctrineUserRepository implements UserRepositoryInterface {
     }
 
     public function delete(User $user): void {
-        $user = $this->entityManager->find(UserMapping::class, $user->getId()->getValue());
+        $userMapping = $this->entityManager->find(UserMapping::class, $user->getId()->getValue());
 
-        if ($user === null) {
-            throw new \Exception("User not found.");
+        if ($userMapping) {
+            $this->entityManager->remove($userMapping);
+            $this->entityManager->flush();
         }
-
-        $this->entityManager->remove($user);
-        $this->entityManager->flush();
     }
 }
