@@ -5,6 +5,7 @@ namespace src\infraestructure\repository;
 use Doctrine\ORM\EntityManagerInterface;
 use src\domain\entity\User;
 use src\domain\entity\valueObject\UserId;
+use src\domain\entity\valueObject\Email;
 use src\domain\repository\UserRepositoryInterface;
 use src\infraestructure\doctrine\UserMapping;
 
@@ -17,6 +18,14 @@ class DoctrineUserRepository implements UserRepositoryInterface {
 
     public function findById(UserId $id): ?User {
         $userMapping = $this->entityManager->find(UserMapping::class, $id->getValue());
+        if ($userMapping === null) {
+            return null;
+        }
+        return $userMapping->toDomain();
+    }
+
+    public function findByEmail(Email $email): ?User {
+        $userMapping = $this->entityManager->getRepository(UserMapping::class)->findOneBy(['email' => $email->getValue()]);
         if ($userMapping === null) {
             return null;
         }

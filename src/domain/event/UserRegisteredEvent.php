@@ -2,7 +2,7 @@
 
 namespace src\domain\event;
 
-use src\domain\entity\UserId;
+use src\domain\entity\valueObject\UserId;
 use src\domain\entity\valueObject\Email;
 
 class UserRegisteredEvent {
