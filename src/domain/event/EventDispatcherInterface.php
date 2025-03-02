@@ -3,5 +3,5 @@
 namespace src\domain\event;
 
 interface EventDispatcherInterface {
-    public function dispatch(Event $event): void;
+    public function dispatch(object $event): void;
 }
