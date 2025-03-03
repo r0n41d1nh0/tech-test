@@ -10,8 +10,8 @@ class Name {
     }
 
     private function validate(string $name): string {
-        if (strlen($name) < 2) {
-            throw new \InvalidArgumentException("Name must be at least 2 characters long");
+        if (strlen($name) < 2 || !preg_match('/^[\p{L}\s]+$/u', $name)) {
+            throw new \InvalidArgumentException("Invalid name format.");
         }
         return $name;
     }
