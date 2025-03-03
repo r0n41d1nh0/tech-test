@@ -1,6 +1,6 @@
 <?php
 
-namespace src\infraestructure\doctrine;
+namespace src\infrastructure\doctrine;
 
 use Doctrine\ORM\Mapping as ORM;
 use src\domain\entity\User;

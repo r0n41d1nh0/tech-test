@@ -6,7 +6,7 @@ use Doctrine\DBAL\DriverManager;
 
 require_once __DIR__ . '/../../vendor/autoload.php';
 
-$config = ORMSetup::createAttributeMetadataConfiguration([dirname(__DIR__) . "/infraestructure/doctrine"], true);
+$config = ORMSetup::createAttributeMetadataConfiguration([dirname(__DIR__) . "/infrastructure/doctrine"], true);
 $connection = DriverManager::getConnection([
     'dbname' => 'testdb',
     'user' => 'root',

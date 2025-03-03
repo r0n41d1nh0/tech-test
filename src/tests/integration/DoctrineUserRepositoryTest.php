@@ -8,7 +8,7 @@ use src\domain\entity\valueObject\Email;
 use src\domain\entity\valueObject\Name;
 use src\domain\entity\valueObject\Password;
 use src\domain\entity\valueObject\UserId;
-use src\infraestructure\repository\DoctrineUserRepository;
+use src\infrastructure\repository\DoctrineUserRepository;
 
 class DoctrineUserRepositoryTest extends TestCase {
 

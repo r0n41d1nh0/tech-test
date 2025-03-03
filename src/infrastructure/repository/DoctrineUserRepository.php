@@ -1,13 +1,13 @@
 <?php
 
-namespace src\infraestructure\repository;
+namespace src\infrastructure\repository;
 
 use Doctrine\ORM\EntityManagerInterface;
 use src\domain\entity\User;
 use src\domain\entity\valueObject\UserId;
 use src\domain\entity\valueObject\Email;
 use src\domain\repository\UserRepositoryInterface;
-use src\infraestructure\doctrine\UserMapping;
+use src\infrastructure\doctrine\UserMapping;
 
 class DoctrineUserRepository implements UserRepositoryInterface {
     private EntityManagerInterface $entityManager;

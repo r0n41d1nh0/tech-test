@@ -1,6 +1,6 @@
 <?php
 
-namespace src\infraestructure\event;
+namespace src\infrastructure\event;
 
 use src\domain\event\EventDispatcherInterface;
 
