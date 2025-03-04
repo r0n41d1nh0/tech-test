@@ -8,6 +8,9 @@ use src\application\useCase\RegisterUserUseCase;
 use src\application\dto\RegisterUserRequest;
 use src\domain\repository\UserRepositoryInterface;
 use src\domain\event\EventDispatcherInterface;
+use src\domain\exception\InvalidEmailException;
+use src\domain\exception\WeakPasswordException;
+use src\domain\exception\UserAlreadyExistsException;
 
 class RegisterUserControllerTest extends TestCase
 {
@@ -65,14 +68,52 @@ class RegisterUserControllerTest extends TestCase
 
         $this->useCase->expects($this->once())
         ->method('execute')
-        ->willThrowException(new \Exception('Email already exists'));
+        ->willThrowException(new UserAlreadyExistsException('rgomez@example.pe'));
 
         $output = $this->captureOutput(function() {
             $this->controller->register();
         });
         
         $decodedOutput = json_decode($output, true);
-        $this->assertEquals('Email already exists', $decodedOutput['error']);
+        $this->assertEquals('User already exists with email: rgomez@example.pe', $decodedOutput['error']);
+    }
+
+    public function testErrorIfEmailIsInvalid(): void {
+        $this->mockPhpInput(json_encode([
+            'name' => 'Ronald Gómez',
+            'email' => 'invalid-email',
+            'password' => 'StrongPass@123'
+        ]));
+
+        $this->useCase->expects($this->once())
+            ->method('execute')
+            ->willThrowException(new InvalidEmailException('invalid-email'));
+
+        $output = $this->captureOutput(function() {
+            $this->controller->register();
+        });
+
+        $decodedOutput = json_decode($output, true);
+        $this->assertEquals('Invalid email: invalid-email', $decodedOutput['error']);
+    }
+
+    public function testErrorIfPasswordIsWeak(): void {
+        $this->mockPhpInput(json_encode([
+            'name' => 'Ronald Gómez',
+            'email' => 'rgomez@example.pe',
+            'password' => 'weakpass'
+        ]));
+
+        $this->useCase->expects($this->once())
+            ->method('execute')
+            ->willThrowException(new WeakPasswordException());
+
+        $output = $this->captureOutput(function() {
+            $this->controller->register();
+        });
+
+        $decodedOutput = json_decode($output, true);
+        $this->assertEquals('Password does not meet security requirements.', $decodedOutput['error']);
     }
 
     private function mockPhpInput(string $input): void {

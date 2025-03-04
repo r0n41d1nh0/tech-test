@@ -13,6 +13,7 @@ use src\domain\entity\valueObject\UserId;
 use src\domain\repository\UserRepositoryInterface;
 use src\domain\event\UserRegisteredEvent;
 use src\domain\event\EventDispatcherInterface;
+use src\domain\exception\UserAlreadyExistsException;
 
 class RegisterUserUseCaseTest extends TestCase
 {
@@ -36,10 +37,9 @@ class RegisterUserUseCaseTest extends TestCase
     }
 
     public function testExceptionIsThrownIfEmailAlreadyExists(): void {
-        $this->expectException(\Exception::class);
-        $this->expectExceptionMessage('Email already exists');
-
         $request = new RegisterUserRequest("Juan Pérez", "juan@example.com", "SecurePass@2024");
+        $this->expectException(UserAlreadyExistsException::class);
+        $this->expectExceptionMessage('User already exists with email: '.$request->getEmail());
 
         $existingUser = new User(
             new UserId(),

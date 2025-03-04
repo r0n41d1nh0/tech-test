@@ -2,6 +2,8 @@
 
 namespace src\domain\entity\valueObject;
 
+use src\domain\exception\InvalidEmailException;
+
 class Email {
     private string $value;
 
@@ -11,7 +13,7 @@ class Email {
 
     private function validate(string $email): string {
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            throw new \InvalidArgumentException("Invalid email address: $email");
+            throw new InvalidEmailException($email);
         }
         return $email;
     }

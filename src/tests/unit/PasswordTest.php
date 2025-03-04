@@ -4,6 +4,7 @@ namespace src\tests\unit;
 
 use PHPUnit\Framework\TestCase;
 use src\domain\entity\valueObject\Password;
+use src\domain\exception\WeakPasswordException;
 
 class PasswordTest extends TestCase
 {
@@ -13,7 +14,7 @@ class PasswordTest extends TestCase
     }
 
     public function testPasswordWithoutUppercaseIsRejected(): void {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(WeakPasswordException::class);
         new Password("str0ng@pass123");
     }
 
@@ -24,17 +25,17 @@ class PasswordTest extends TestCase
     }
 
     public function testPasswordWithoutNumbersIsRejected(): void {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(WeakPasswordException::class);
         new Password("Strong@Password");
     }
 
     public function testPasswordWithoutSpecialCharactersIsRejected(): void {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(WeakPasswordException::class);
         new Password("StrongPass123");
     }
 
     public function testPasswordWithLessThan8CharactersIsRejected(): void {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(WeakPasswordException::class);
         new Password("A@1b");
     }
 

@@ -7,6 +7,10 @@ use src\application\dto\RegisterUserRequest;
 use src\domain\repository\UserRepositoryInterface;
 use src\domain\event\EventDispatcherInterface;
 
+use src\domain\exception\UserAlreadyExistsException;
+use src\domain\exception\WeakPasswordException;
+use src\domain\exception\InvalidEmailException;
+
 class RegisterUserController
 {
     private RegisterUserUseCase $useCase;
@@ -28,8 +32,12 @@ class RegisterUserController
             $request = new RegisterUserRequest(trim($input['name']), trim($input['email']), trim($input['password']));
             $this->useCase->execute($request);
             $this->sendResponse(['message' => 'User registered successfully'],201);
+        } catch (InvalidEmailException | WeakPasswordException $e) {
+            $this->sendResponse(['error' => $e->getMessage()], 422);
+        } catch (UserAlreadyExistsException $e) {
+            $this->sendResponse(['error' => $e->getMessage()], 409);  
         } catch (\Exception $e) {
-            $this->sendResponse(['error' => $e->getMessage()],400);
+            $this->sendResponse(['error' => 'An unexpected error occurred'], 500);
         }
     }
 

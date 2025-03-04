@@ -11,6 +11,7 @@ use src\domain\entity\valueObject\UserId;
 use src\domain\repository\UserRepositoryInterface;
 use src\domain\event\UserRegisteredEvent;
 use src\domain\event\EventDispatcherInterface;
+use src\domain\exception\UserAlreadyExistsException;
 
 class RegisterUserUseCase {
     private UserRepositoryInterface $repository;
@@ -24,7 +25,7 @@ class RegisterUserUseCase {
     public function execute(RegisterUserRequest $request): void {
         $email = new Email($request->getEmail());
         if ($this->repository->findByEmail($email) !== null) {
-            throw new \Exception('Email already exists');
+            throw new UserAlreadyExistsException($email->getValue());
         }
 
         $user = new User(
