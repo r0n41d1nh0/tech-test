@@ -11,31 +11,31 @@ class RegisterUserController
 {
     private RegisterUserUseCase $useCase;
 
-    public function __construct(UserRepositoryInterface $userRepository, EventDispatcherInterface $eventDispatcher)
-    {
-        $this->useCase = new RegisterUserUseCase($userRepository, $eventDispatcher);
+    public function __construct(RegisterUserUseCase $useCase) {
+        $this->useCase = $useCase;
     }
 
     public function register(): void {
-        $input = json_decode(file_get_contents('php://input'), true);
+        global $TEST_REQUEST_BODY;
+        $input = json_decode($TEST_REQUEST_BODY ?? file_get_contents("php://input"), true);
 
         if (!isset($input['name']) || !isset($input['email']) || !isset($input['password'])) {
-            $this->sendResponse(['error', 'Missing required fields'],400);
+            $this->sendResponse(['error' => 'Missing required fields'],400);
             return;
         }
 
         try {
             $request = new RegisterUserRequest(trim($input['name']), trim($input['email']), trim($input['password']));
             $this->useCase->execute($request);
-            $this->sendResponse(['message', 'User registered successfully'],201);
+            $this->sendResponse(['message' => 'User registered successfully'],201);
         } catch (\Exception $e) {
-            $this->sendResponse(['error', $e->getMessage()],400);
+            $this->sendResponse(['error' => $e->getMessage()],400);
         }
     }
 
     private function sendResponse(array $response, int $statusCode): void {
         http_response_code($statusCode);
         header('Content-Type: application/json');
-        echo json_encode($response);
+        echo json_encode($response, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
     }
 }
