@@ -1,0 +1,15 @@
+/vendor/
+
+.env
+*.env.local
+/config/*.local.php
+
+/var/
+*.log
+
+docker-compose.override.yml
+docker-compose.dev.yml
+
+/db_data/
+
+/.phpunit.result.cache

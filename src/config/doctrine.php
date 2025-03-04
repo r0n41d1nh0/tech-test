@@ -8,10 +8,10 @@ require_once __DIR__ . '/../../vendor/autoload.php';
 
 $config = ORMSetup::createAttributeMetadataConfiguration([dirname(__DIR__) . "/infrastructure/doctrine"], true);
 $connection = DriverManager::getConnection([
-    'dbname' => 'testdb',
-    'user' => 'root',
-    'password' => '12345678',
-    'host' => 'localhost',
+    'dbname' => 'test_db',
+    'user' => 'user',
+    'password' => 'password',
+    'host' => '192.168.100.102',
     'driver' => 'pdo_mysql',
 ]);
 
