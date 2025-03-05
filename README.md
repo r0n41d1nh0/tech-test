@@ -17,8 +17,12 @@ Este proyecto es una API desarrollada en PHP utilizando Docker y MySQL.
    ```sh
    ./init.sh
 
-3. **Puedes probar con curl**  
-    ```sh
+4. **Puedes probar con curl**  
+   ```sh
     curl -X POST http://localhost:8000/register.php \
      -H "Content-Type: application/json" \
      -d '{"name": "Ronald Gómez", "email": "rgomez@example.pe", "password": "StrongPass@123"}'
+
+5. **Puedes ejecutar los test**  
+   ```sh
+     docker compose run --rm phpunit
