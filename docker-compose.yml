@@ -22,16 +22,22 @@ services:
     networks:
       tech_network:
         ipv4_address: 192.168.100.101
+    environment:
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      DB_DATABASE: ${DB_DATABASE}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
 
   db:
     image: mysql:8.0
     container_name: mysql_db
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: test_db
-      MYSQL_USER: user
-      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
     ports:
       - "3306:3306"
     volumes:
@@ -45,6 +51,16 @@ services:
       timeout: 3s
       retries: 10
 
+  phpunit:
+    build: .
+    container_name: phpunit_runner
+    volumes:
+      - .:/var/www/html
+    depends_on:
+      - app
+    entrypoint: ["/bin/sh", "-c", "vendor/bin/phpunit --testdox"]
+    networks:
+      tech_network: {}
 
 volumes:
   db_data:
