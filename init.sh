@@ -5,6 +5,10 @@ echo "Inicializando entorno de desarrollo..."
 docker compose up --build -d
 
 echo "Esperando que se carguen todos los servicios"
+until docker ps | grep -q "php_app"; do
+    sleep 2
+done
+
 sleep 10
 
 
