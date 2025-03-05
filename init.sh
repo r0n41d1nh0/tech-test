@@ -1,4 +1,7 @@
 #!/bin/bash
+echo "Instalando dependencias..."
+composer install
+
 
 echo "Inicializando entorno de desarrollo..."
 
